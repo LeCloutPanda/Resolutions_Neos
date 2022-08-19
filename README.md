@@ -8,3 +8,5 @@
 
 # Requirements
 [NeosModSettings](https://github.com/badhaloninja/NeosModSettings) to modify settings.
+
+Current Sha256: b2b2454ffe50b4f783c36621c6de7a4db48cd679a6e8360400789df355e961a6
