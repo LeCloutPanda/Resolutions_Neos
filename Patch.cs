@@ -1,18 +1,15 @@
-﻿using FrooxEngine;
+﻿using BaseX;
+using FrooxEngine;
 using HarmonyLib;
 using NeosModLoader;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Resolutions
+{ 
     public class Patch : NeosMod
     {
-        public override string Name => "PrivatePatches";
+        public override string Name => "Resolutions";
         public override string Author => "LeCloutPanda";
-        public override string Version => "1.0.1";
+        public override string Version => "1.0.0";
 
         public static ModConfiguration config;
 
