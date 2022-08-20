@@ -1,4 +1,4 @@
-# DefaultLaserState
+# Resolutions
 [NeosModLoader](https://github.com/zkxs/NeosModLoader) mod for [Neos](https://neos.com/) that lets you control what resolution Finger Photos are taken at.
  
 # Installation
