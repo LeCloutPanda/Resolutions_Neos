@@ -13,7 +13,7 @@ $LogJob = Start-Job {Start-Sleep -Seconds 8
     Get-Content "D:\Games\SteamLibrary\steamapps\common\NeosVR\Logs\$(Get-ChildItem -Path D:\Games\SteamLibrary\steamapps\common\NeosVR\Logs | Sort-Object LastWriteTime | Select-Object -last 1)" -Wait
 }
 
-$NeosProc = Start-Process -FilePath $NeosExe -WorkingDirectory $NeosDir -ArgumentList "-Screen", "-SkipIntroTutorial", "-LoadAssembly `"D:\Games\SteamLibrary\steamapps\common\NeosVR\Libraries\NeosModLoader.dll`"" -passthru
+$NeosProc = Start-Process -FilePath $NeosExe -WorkingDirectory $NeosDir -ArgumentList "-Screen", "-SkipIntroTutorial", "-LoadAssembly `"D:\Games\SteamLibrary\steamapps\common\NeosVR\NeosModLoader.dll`"" -passthru
 
 while(!$NeosProc.HasExited) {
     Start-Sleep -Seconds 1
