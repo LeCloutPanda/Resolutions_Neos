@@ -2,6 +2,7 @@
 using FrooxEngine;
 using HarmonyLib;
 using NeosModLoader;
+using System.Collections.Generic;
 
 namespace Resolutions
 { 
@@ -9,10 +10,16 @@ namespace Resolutions
     {
         public override string Name => "Resolutions";
         public override string Author => "LeCloutPanda";
-        public override string Version => "1.0.1";
+        public override string Version => "1.0.2";
 
         public static ModConfiguration config;
-        static PhotoCaptureManager photoCaptureManager;
+
+        [AutoRegisterConfigKey]
+        private static ModConfigurationKey<int2> RESOLUTION = new ModConfigurationKey<int2>("Finger Photo Resolution", "", () => new int2(1920, 1080));
+        [AutoRegisterConfigKey]
+        private static ModConfigurationKey<int2> TiMER_RESOLUTION = new ModConfigurationKey<int2>("Finger Photo Timer Resolution", "", () => new int2(2560, 1440));
+
+        static List<PhotoCaptureManager> photoCaptureManagers = new List<PhotoCaptureManager>();
 
         public override void OnEngineInit()
         {
@@ -22,20 +29,22 @@ namespace Resolutions
             Harmony harmony = new Harmony($"dev.{Author}.{Name}");
             harmony.PatchAll();
 
-            config.OnThisConfigurationChanged += UpdateCrap;
+            config.OnThisConfigurationChanged += UpdateValues;
         }
 
-
-        private void UpdateCrap(ConfigurationChangedEvent @event)
+        private void UpdateValues(ConfigurationChangedEvent @event)
         {
-            photoCaptureManager.NormalResolution.Value = config.GetValue(RESOLUTION);
-            photoCaptureManager.TimerResolution.Value = config.GetValue(TiMER_RESOLUTION);
+            for (int i = 0; i < photoCaptureManagers.Count; i++)
+            {
+                var manager = photoCaptureManagers[i];
+
+                if (manager != null)
+                {
+                    manager.NormalResolution.Value = config.GetValue(RESOLUTION);
+                    manager.TimerResolution.Value = config.GetValue(TiMER_RESOLUTION);
+                }
+            }
         }
-        
-        [AutoRegisterConfigKey]
-        private static ModConfigurationKey<int2> RESOLUTION = new ModConfigurationKey<int2>("Finger Photo Resolution", "", () => new int2(1920, 1080));
-        [AutoRegisterConfigKey]
-        private static ModConfigurationKey<int2> TiMER_RESOLUTION = new ModConfigurationKey<int2>("Finger Photo Timer Resolution", "", () => new int2(2560, 1440));
         
         [HarmonyPatch(typeof(PhotoCaptureManager))]
         static class HeheMakeCustomResPhotos
@@ -48,9 +57,9 @@ namespace Resolutions
 
                 __instance.RunInUpdates(3, () =>
                 {
-                    photoCaptureManager = __instance;
-                    photoCaptureManager.NormalResolution.Value = config.GetValue(RESOLUTION);
-                    photoCaptureManager.TimerResolution.Value = config.GetValue(TiMER_RESOLUTION);
+                    __instance.NormalResolution.Value = config.GetValue(RESOLUTION);
+                    __instance.TimerResolution.Value = config.GetValue(TiMER_RESOLUTION);
+                    photoCaptureManagers.Add(__instance);
                 });
             }
         }
